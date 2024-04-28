@@ -13,6 +13,10 @@ const httpServer = app.listen(8080);
 const wss = new ws_1.WebSocketServer({ server: httpServer });
 wss.on('connection', (ws) => {
     ws.on('message', (data) => {
-        console.log(data.toString());
+        wss.clients.forEach((client) => {
+            if (client.readyState === ws_1.WebSocket.OPEN) {
+                client.send(data.toString());
+            }
+        });
     });
 });

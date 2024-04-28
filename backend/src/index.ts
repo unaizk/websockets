@@ -1,5 +1,5 @@
 import express from 'express';
-import { WebSocketServer } from 'ws';
+import { WebSocketServer , WebSocket} from 'ws';
 
 const app = express();
 
@@ -13,7 +13,11 @@ const wss = new WebSocketServer({server : httpServer})
 
 wss.on('connection',(ws) =>{
     ws.on('message',(data) =>{
-        console.log(data.toString());
+        wss.clients.forEach((client) =>{
+            if(client.readyState === WebSocket.OPEN){
+                client.send(data.toString())
+            }
+        })
         
     })
 })
