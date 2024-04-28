@@ -17,6 +17,9 @@ function App() {
     socket.onmessage = (message) =>{
       setLatestMessage((prevMessages) => [...prevMessages,message.data])
     };
+    return () =>{
+      socket.close()
+    }
 
   },[])
 
